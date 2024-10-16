@@ -58,7 +58,6 @@ jobs:
         - name: Download build artifacts
           uses: actions/download-artifact@v4
           with: 
-            name: build-${{ matrix.os }}
             path: ./build/
 
         - name: Create GitHub Release

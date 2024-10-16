@@ -74,5 +74,5 @@ jobs:
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
-          echo $CHANGELOG > Changelog.md
+          echo "$CHANGELOG" > Changelog.md
           gh release create -F Changelog.md --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip

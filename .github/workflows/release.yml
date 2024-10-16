@@ -38,10 +38,13 @@ jobs:
           profile: minimal
 
       - name: trunk action
-        uses: jetli/trunk-action@latest
+        uses: jetli/trunk-action@v0.5.0
+        with: 
+          version:
+            latest
 
-      - name: trunk-action
-        run: jetli/trunk-action@v0.5.0
+      - name: Build for release
+        run: trunk build --release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

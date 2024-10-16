@@ -52,7 +52,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}.zip
+          name: build-${{ matrix.os }}
           path: build-${{ matrix.os }}.zip
 
   release:
@@ -74,4 +74,4 @@ jobs:
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
-          gh release create --repo $REPO --target $COMMIT $VERSION dist/build-*.zip
+          gh release create --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip

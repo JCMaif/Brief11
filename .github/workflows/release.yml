@@ -64,11 +64,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with: 
-          name: build-${{ matrix.os }}
           path: ./dist/
 
-      - name: Compress artifacts into ZIP for release
-        run: zip -r release.zip ./dist/
 
       - name: Create GitHub Release
         env:
@@ -77,4 +74,4 @@ jobs:
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
-          gh release create --repo $REPO --target $COMMIT $VERSION release.zip
+          gh release create --repo $REPO --target $COMMIT $VERSION dist/build-*.zip

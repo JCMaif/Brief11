@@ -66,12 +66,13 @@ jobs:
         with: 
           path: ./dist/
 
-
       - name: Create GitHub Release
         env:
+          
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
-          gh release create --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip
+          echo ${{ needs.get-version.outputs.changelogs }} > Changelog.md
+          gh release create -F Changelog.md --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip

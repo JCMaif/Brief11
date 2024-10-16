@@ -68,11 +68,11 @@ jobs:
 
       - name: Create GitHub Release
         env:
-          
+          CHANGELOG: "${{ needs.get-version.outputs.changelogs }}"
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
-          echo ${{ needs.get-version.outputs.changelogs }} > Changelog.md
+          echo $CHANGELOG > Changelog.md
           gh release create -F Changelog.md --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip

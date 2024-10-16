@@ -74,5 +74,10 @@ jobs:
           COMMIT: "${{ github.sha }}"
           GH_TOKEN: "${{ github.token }}"
         run: |
+          ISPRERELEASECMD=""
+          if [ "${{ needs.get-version.outputs.is-prerelease  }}" == "true" ]
+          then 
+            ISPRERELEASECMD="--prerelease"
+          fi
           echo "$CHANGELOG" > Changelog.md
-          gh release create -F Changelog.md --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip
+          gh release create -F Changelog.md $ISPRERELEASECMD --repo $REPO --target $COMMIT $VERSION dist/build-*/build-*.zip

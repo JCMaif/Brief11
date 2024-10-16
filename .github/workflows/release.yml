@@ -47,30 +47,34 @@ jobs:
         run: trunk build --release
 
       - name: Compress artifacts into a ZIP file
-        run: zip -r build.zip ./dist/
+        run: zip -r build-${{ matrix.os }}.zip ./dist/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: build-${{ matrix.os }}.zip
+          path: build-${{ matrix.os }}.zip
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [get-version, build]
+    if: ${{ needs.get-version.outputs.will-release == 'true' }}
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with: 
           name: build-${{ matrix.os }}
           path: ./dist/
 
-  release:
-      name: Create Release
-      runs-on: ubuntu-latest
-      needs: [get-version, build]
-      if: ${{ needs.get-version.outputs.will-release == 'true' }}
-      steps:
-        - name: Download build artifacts
-          uses: actions/download-artifact@v4
-          with: 
-            path: ./build/
+      - name: Compress artifacts into ZIP for release
+        run: zip -r release.zip ./dist/
 
-        - name: Create GitHub Release
-          env:
-            VERSION: "${{ needs.get-version.outputs.version }}"
-            REPO: "${{ github.repository }}"
-            COMMIT: "${{ github.sha }}"
-            GH_TOKEN: "${{ github.token }}"
-          run: |
-              gh release create --repo $REPO --target $COMMIT $VERSION build/*
+      - name: Create GitHub Release
+        env:
+          VERSION: "${{ needs.get-version.outputs.version }}"
+          REPO: "${{ github.repository }}"
+          COMMIT: "${{ github.sha }}"
+          GH_TOKEN: "${{ github.token }}"
+        run: |
+          gh release create --repo $REPO --target $COMMIT $VERSION release.zip

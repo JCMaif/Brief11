@@ -40,8 +40,8 @@ jobs:
       - name: trunk action
         uses: jetli/trunk-action@latest
 
-      - name: Build for release
-        run: trunk build --release
+      - name: trunk-action
+        run: jetli/trunk-action@v0.5.0
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

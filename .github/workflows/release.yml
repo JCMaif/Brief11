@@ -40,8 +40,8 @@ jobs:
       - name: Install Trunk and wasm-bindgen
         run: cargo install trunk wasm-bindgen-cli
 
-      - name: Build for release
-        run: trunk build --release
+      - name: trunk-action
+        run: jetli/trunk-action@v0.5.0
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
